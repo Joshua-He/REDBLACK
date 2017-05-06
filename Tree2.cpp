@@ -81,7 +81,7 @@ int main(){
   int  value;
   int loop=1;
   while (loop ==1) {
-    cout << endl << "Enter command (add, print, listprint, exit):" << endl << "(listprint is for when the tree gets too big, print is treelike)" << endl;
+    cout << endl << "Enter command (add, print, listprint, exit):" << endl << "(\"listprint\" is for value/color/parent details, \"print\" is treelike)" << endl;
     cin >> input;
 
     if (!strcmp(input, (char*)"print")) {
@@ -99,15 +99,21 @@ int main(){
     }
     
     if (!strcmp(input, (char*)"exit")) {
-      loop=0;
+      loop = 0;
     }
-    
+    cin.clear();
   }
 }
 
 //Shifts and recolors the tree so that the conditions for a red black tree are met
 void rotateTree(TreeNode* &current){
 
+  if (current->getParent() == NULL)
+    return;
+
+  if (current->getParent()->getColor() == 1)
+    return;
+  
   //Get color of uncle
   TreeNode* temp = current->getParent()->getParent();
   
@@ -294,8 +300,8 @@ void addToTree(int number, TreeNode* &root){
 	if(root->getColor() == 0){
 	  //Recolor tree
           rotateTree(newNode);
-	  return;
 	}
+	return;
 	}
       //Recursive call to add to right subtree using temporary variable
       else{
@@ -314,8 +320,8 @@ void addToTree(int number, TreeNode* &root){
 	  if(root->getColor() == 0){
 	    //Recolor
 	    rotateTree(newNode);
-	    return;
 	  }
+	  return;
       }
       //Recursive call to add to left subtree using temporary variable
       else{
@@ -352,7 +358,7 @@ void printList(TreeNode* root){
       cout << "Parent: " << root->getParent()->getValue() << "; ";
     }
     else{
-      cout << "Parent: " << "NULL " << "Left/Right: " << "ROOT;" << endl << endl;
+      cout << "Parent: " << "NULL; " << "IS " << "ROOT; ";
     }
 
     //LEFT OR RIGHT CHILD
@@ -459,10 +465,13 @@ void printRow1(int array[1000], int colorArray[1000], int cnt)
       else{
 	printf("B ");
       }   
-  }
-  else{
-    printf(" ___ ");
-  }
+    }
+   else{
+      if (cnt <= 63)
+         printf(" ___ ");
+      else
+         printf(" _ ");
+    }
   }
 
   printf("\n");
